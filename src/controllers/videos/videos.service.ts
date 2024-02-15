@@ -114,10 +114,10 @@ export async function uploadVideoChunked(filePath: string, fileName: string): Pr
 
       if (chunkUploadingResponse?.data as boolean) {
         console.log(chunkUploadingResponse?.data);
-        const progress = (startByte / fileSize) * 100;
-        uploadProgressEmitter.emit('progress', progress);
-        if (progress === 100) uploadProgressEmitter.emit('complete');
       }
+      const progress = (startByte / fileSize) * 100;
+      uploadProgressEmitter.emit('progress', progress);
+      if (progress === 100) uploadProgressEmitter.emit('complete');
     }
 
     fs.unlink(filePath, (fileerr) => {
