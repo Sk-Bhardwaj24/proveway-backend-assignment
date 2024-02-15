@@ -67,9 +67,7 @@ This project aims to facilitate the download of large video files from a specifi
    - Use the provided endpoint to monitor the status the download which will provide visibility into the progress of each chunk.
 
    ```yaml
-   GET https://proveway-backend-assignment-production.up.railway.app/api/videos/download-progress
-   Content-Type: application/json
-    token: <your-auth-token>
+   EventSource_API: 'https://proveway-backend-assignment-production.up.railway.app/api/videos/download-progress'
    ```
 
 3. **Monitor Progress of uploading file**:
@@ -77,9 +75,7 @@ This project aims to facilitate the download of large video files from a specifi
    - Use the provided endpoint to monitor the status the download which will provide visibility into the progress of each chunk.
 
    ```yaml
-   GET https://proveway-backend-assignment-production.up.railway.app/api/videos/upload-progress
-   Content-Type: application/json
-    token: <your-auth-token>
+   EventSource_API: https://proveway-backend-assignment-production.up.railway.app/api/videos/upload-progress
    ```
 
 ## Documentation

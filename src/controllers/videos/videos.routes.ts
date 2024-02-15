@@ -13,5 +13,5 @@ videosRouter.post(
   VideosController.downloadVideo
 );
 
-videosRouter.get('/download-progress', authenticate, VideosController.getDownloadProgress);
-videosRouter.get('/upload-progress', authenticate, VideosController.getUploadProgress);
+videosRouter.get('/download-progress', VideosController.getDownloadProgress);
+videosRouter.get('/upload-progress', VideosController.getUploadProgress);
