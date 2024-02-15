@@ -5,6 +5,13 @@ import { Request, Response } from 'express';
 import { findUser, registerUser } from './auth.service';
 import { IGetUserAuthInfoRequest } from '../../helpers/interface.helper';
 export default {
+  /**
+   * Perform a Google login using the provided request and response objects.
+   *
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @return {Promise<void>} No return value
+   */
   googleLogin: async (req: Request, res: Response) => {
     try {
       const payload: any = await loginGoogle(req.body.token);
@@ -73,6 +80,13 @@ export default {
       );
     }
   },
+  /**
+   * A description of the entire function.
+   *
+   * @param {IGetUserAuthInfoRequest} req - description of parameter
+   * @param {Response} res - description of parameter
+   * @return {Promise<void>} description of return value
+   */
   getProfile: async (req: IGetUserAuthInfoRequest, res: Response) => {
     try {
       if (req.user?.email as unknown as boolean) {

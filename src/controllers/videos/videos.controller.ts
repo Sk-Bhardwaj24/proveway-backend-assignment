@@ -11,6 +11,13 @@ import {
 } from './videos.service';
 
 export default {
+  /**
+   * Download a video file from a source and upload it to a destination.
+   *
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @return {void} no return value
+   */
   downloadVideo: async (req: Request, res: Response) => {
     const directory = path.join(__dirname, '../../../downloadedFiles/');
     ensureDirectoryExists(directory);
@@ -69,6 +76,13 @@ export default {
     }
   },
 
+  /**
+   * A function to get the download progress.
+   *
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @return {void}
+   */
   getDownloadProgress: async (req: Request, res: Response) => {
     const allowedOrigin = req.headers.origin ?? '';
     res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
@@ -97,6 +111,13 @@ export default {
     });
   },
 
+  /**
+   * A function to get the upload progress and set CORS headers.
+   *
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @return {void}
+   */
   getUploadProgress: async (req: Request, res: Response) => {
     const allowedOrigin = req.headers.origin ?? '';
     res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
