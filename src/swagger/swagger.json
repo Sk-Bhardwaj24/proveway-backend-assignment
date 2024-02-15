@@ -1,0 +1,193 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "proveway-backend-assignment",
+    "description": "documnetion for proveway-backend-assignment",
+    "version": "0.0.1"
+  },
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "successWithObjectResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "default": "successful"
+          },
+          "status": {
+            "type": "boolean",
+            "default": true
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "successWithArrayResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "default": "successful"
+          },
+          "status": {
+            "type": "boolean",
+            "default": true
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "badRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 400
+          },
+          "message": {
+            "type": "string",
+            "default": "Bad request"
+          },
+          "status": {
+            "type": "boolean",
+            "default": false
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "unprocessable": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 422
+          },
+          "message": {
+            "type": "string",
+            "default": "Unprocessable Entity"
+          },
+          "status": {
+            "type": "boolean",
+            "default": false
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "unauthorized": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 401
+          },
+          "message": {
+            "type": "string",
+            "default": "Unauthorized"
+          },
+          "status": {
+            "type": "boolean",
+            "default": false
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "conflict": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 409
+          },
+          "message": {
+            "type": "string",
+            "default": "Conflict request"
+          },
+          "status": {
+            "type": "boolean",
+            "default": false
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "serverError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 500
+          },
+          "message": {
+            "type": "string",
+            "default": "Something went wrong. Please try again!"
+          },
+          "status": {
+            "type": "boolean",
+            "default": false
+          },
+          "data": {
+            "type": "object",
+            "default": {}
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "{Protocol}://{Username}{Port}",
+      "description": "The production API server",
+      "variables": {
+        "Username": {
+          "default": "localhost",
+          "description": "this value is assigned by the service provider, in this example `gigantic-server.com`"
+        },
+        "Port": {
+          "enum": [":3000", ":3001", ""],
+          "default": ""
+        },
+        "Protocol": {
+          "default": "http",
+          "enum": ["http", "https"]
+        }
+      }
+    }
+  ]
+}
