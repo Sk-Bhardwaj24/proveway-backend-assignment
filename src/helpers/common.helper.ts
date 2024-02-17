@@ -19,6 +19,16 @@ export const responseMethod = (
   });
 };
 
+export const sendEventData = (
+  res: Response,
+  dataObject: { progress?: number; message?: string; type: string },
+  end = false
+): void => {
+  res.write(`data: ${JSON.stringify(dataObject)}\n\n`);
+  if (end) {
+    res.end();
+  }
+};
 export function ensureDirectoryExists(directory: string): void {
   if (!fs.existsSync(directory)) {
     fs.mkdirSync(directory, { recursive: true });

@@ -36,5 +36,5 @@ function isAccessTokenExpired(expirationTime: number): boolean {
   const currentTime = new Date().getTime();
 
   // Compare the expiration time with the current time
-  return expirationTime <= currentTime;
+  return new Date(expirationTime).getTime() <= currentTime;
 }

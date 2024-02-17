@@ -10,6 +10,9 @@ export type UserDocuments = Document & {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+  refreshToken: string;
+  accessToken: string;
+  accessTokenExpiration: Date;
 };
 
 const users = new Schema(
