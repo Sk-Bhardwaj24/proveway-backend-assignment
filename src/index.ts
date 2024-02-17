@@ -7,7 +7,8 @@ import { joiErrorFormator } from './helpers/validation.helper';
 import cors from 'cors';
 import { apiRoutes } from './routes/api.routes';
 import { connectMongodb } from './config/database';
-
+import fs from 'fs';
+import { oauth2Client } from './config/google.drive';
 config();
 const app = express();
 app.use(cors());
@@ -19,7 +20,12 @@ connectMongodb();
 app.listen(PORT, () => {
   console.log('App is listening At', PORT);
 });
-
+try {
+  const tokenFile = fs.readFileSync('tokens.json') as unknown as string;
+  oauth2Client.setCredentials(JSON.parse(tokenFile));
+} catch (error) {
+  console.log('no tokenfile found');
+}
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', apiRoutes);
 app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) => {

@@ -43,6 +43,18 @@ const users = new Schema(
     updatedAt: {
       type: Date,
       default: Date.now
+    },
+    accessToken: {
+      type: String,
+      required: false
+    },
+    refreshToken: {
+      type: String,
+      required: false
+    },
+    accessTokenExpiration: {
+      type: Date,
+      required: false
     }
   },
   {

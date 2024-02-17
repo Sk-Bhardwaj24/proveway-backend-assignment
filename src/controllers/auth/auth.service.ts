@@ -7,3 +7,7 @@ export const findUser = async (query: queryInterface, field?: object): Promise<a
 export const registerUser = async (data: object): Promise<any> => {
   return await Users.create(data);
 };
+
+export const updateUser = async (query: queryInterface, data: object): Promise<any> => {
+  return await Users.updateOne(query, { $set: data });
+};

@@ -34,5 +34,6 @@ export const responseMessage = {
   VERIFY_TOKEN_SUCCESSFULL: 'Token verified successfully',
   VERIFY_TOKEB_UNSUCCESSFULL: 'Token verification failed',
   TOKEN_MISSING: 'Token missing',
-  USER_NOT_FOUND: 'User not found'
+  USER_NOT_FOUND: 'User not found',
+  LOGOUT_SUCCESSFULL: 'Logout successfull'
 };

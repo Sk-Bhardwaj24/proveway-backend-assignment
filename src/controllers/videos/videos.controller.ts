@@ -2,13 +2,14 @@ import { Request, Response } from 'express';
 import path from 'path';
 import { ensureDirectoryExists, responseMethod } from '../../helpers/common.helper';
 import { responseCode, responseMessage } from '../../config/constant';
-import { getDriveInstance } from '../../config/google.drive';
+import { oauth2Client } from '../../config/google.drive';
 import {
   downloadDriveVideos,
   uploadVideoChunked,
   uploadProgressEmitter,
   downloadProgressEmitter
 } from './videos.service';
+import { google } from 'googleapis';
 
 export default {
   /**
@@ -18,7 +19,7 @@ export default {
    * @param {Response} res - the response object
    * @return {void} no return value
    */
-  downloadVideo: async (req: Request, res: Response) => {
+  downloadVideo: async (req: Request, res: Response): Promise<any> => {
     const directory = path.join(__dirname, '../../../downloadedFiles/');
     ensureDirectoryExists(directory);
     try {
@@ -31,7 +32,7 @@ export default {
         throw new Error('Invalid file');
       }
       console.log(fileId);
-      const drive = await getDriveInstance();
+      const drive = google.drive({ version: 'v3', auth: oauth2Client });
       const response = await drive.files.get({
         fileId,
         fields: 'size, name'
@@ -63,6 +64,7 @@ export default {
         true,
         responseMessage.DOWNLOADING_SUCCESSFULL
       );
+      res.end();
     } catch (error) {
       console.error('Error downloading file:', error);
       responseMethod(

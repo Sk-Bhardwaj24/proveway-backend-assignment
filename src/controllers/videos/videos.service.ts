@@ -1,7 +1,8 @@
 import fs from 'fs';
 import axios from 'axios';
-import { authorize, getDriveInstance } from '../../config/google.drive';
+import { oauth2Client } from '../../config/google.drive';
 import EventEmitter from 'events';
+import { google } from 'googleapis';
 
 const uploadProgressEmitter = new EventEmitter();
 const downloadProgressEmitter = new EventEmitter();
@@ -21,7 +22,7 @@ export async function downloadDriveVideos(
 ): Promise<any> {
   const dest = fs.createWriteStream(filePath);
   try {
-    const drive = await getDriveInstance();
+    const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
     const result: any = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'stream' });
 
@@ -76,12 +77,9 @@ export async function downloadDriveVideos(
  */
 export async function uploadVideoChunked(filePath: string, fileName: string): Promise<any> {
   try {
-    const auth = await authorize();
-    const accessToken = (await auth.getAccessToken()).token as string;
-
     const name = fileName;
     const mimeType = 'video/mp4';
-    const parents = ['1sk2RwEzmU1-feA35dhn38bVJlJG9RW2j8RAUOeVreYlfmlleQrrrzCyjzQNLIPvEFznXuBtL'];
+    // const parents = ['1sk2RwEzmU1-feA35dhn38bVJlJG9RW2j8RAUOeVreYlfmlleQrrrzCyjzQNLIPvEFznXuBtL'];
 
     const chunkSize = 5 * 1024 * 1024; // This is a sample chunk size.
     const fileSize: number = fs.statSync(filePath).size;
@@ -90,10 +88,10 @@ export async function uploadVideoChunked(filePath: string, fileName: string): Pr
       method: 'POST',
       url: 'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${(await oauth2Client.getAccessToken()).token as string}`,
         'Content-Type': 'application/json'
       },
-      data: JSON.stringify({ name, mimeType, parents })
+      data: JSON.stringify({ name, mimeType })
     });
 
     const { location } = initialResponse.headers;
