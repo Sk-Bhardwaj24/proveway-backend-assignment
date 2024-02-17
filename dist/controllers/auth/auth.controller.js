@@ -43,6 +43,7 @@ exports.default = {
                 'https://www.googleapis.com/auth/drive'
             ]
         });
+        console.log('url==============>', url);
         res.redirect(url);
     },
     googleRedirect: async (req, res) => {
