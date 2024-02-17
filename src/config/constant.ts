@@ -29,6 +29,8 @@ export const responseCode = {
 export const responseMessage = {
   INTERNAL_SERVER_ERROR: 'Something went wrong. Please try again!',
   DOWNLOADING_SUCCESSFULL: 'Downloading successfull',
+  DOWNLOADING_UNSUCCESSFULL: 'Downloading unsuccessfull',
+  DOWNLOADING_IN_PROGRESS: 'Downloading in progress',
   SIGN_IN_SUCCESSFULL: 'You are successfully signed in.',
   TOKEN_EXPIRED: 'Token has been expired',
   VERIFY_TOKEN_SUCCESSFULL: 'Token verified successfully',

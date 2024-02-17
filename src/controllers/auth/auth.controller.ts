@@ -81,7 +81,7 @@ export default {
       const decodedIdToken: any = jwt.decode(tokens.id_token as string);
       const accessToken = tokens.access_token as string;
       const refreshToken = tokens.refresh_token as string;
-
+      const accessTokenExpiration = tokens.expiry_date as number;
       const email = decodedIdToken?.email as string;
       const user = await findUser({ email }, { email: 1 });
       const userData = {
@@ -95,7 +95,7 @@ export default {
       if (!(user?.email as boolean)) {
         await registerUser(userData);
       } else {
-        await updateUser({ _id: user?._id }, { $set: { accessToken, refreshToken } });
+        await updateUser({ _id: user?._id }, { accessToken, refreshToken, accessTokenExpiration });
       }
       const tokenPayload = {
         email,

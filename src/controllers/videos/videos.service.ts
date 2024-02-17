@@ -106,7 +106,9 @@ export async function uploadVideoChunked(filePath: string, fileName: string): Pr
         url: location,
         headers: { 'Content-Range': `bytes ${startByte}-${currentEndByte}/${fileSize}` },
         data: fs.createReadStream(filePath, { start: startByte, end: currentEndByte })
-      }).catch(({ response }) => console.log({ status: response.status, message: response.data }));
+      }).catch(({ response }) =>
+        console.log({ status: response?.status, message: response?.data })
+      );
 
       startByte = currentEndByte + 1;
 

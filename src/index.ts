@@ -11,7 +11,16 @@ import fs from 'fs';
 import { oauth2Client } from './config/google.drive';
 config();
 const app = express();
-app.use(cors());
+
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'https://proveway-frontend-rho.vercel.app'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+    allowedHeaders: '*'
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT;
