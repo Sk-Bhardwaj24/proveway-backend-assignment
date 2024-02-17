@@ -8,6 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const axios_1 = __importDefault(require("axios"));
 const google_drive_1 = require("../../config/google.drive");
 const events_1 = __importDefault(require("events"));
+const googleapis_1 = require("googleapis");
 const uploadProgressEmitter = new events_1.default();
 exports.uploadProgressEmitter = uploadProgressEmitter;
 const downloadProgressEmitter = new events_1.default();
@@ -23,7 +24,7 @@ exports.downloadProgressEmitter = downloadProgressEmitter;
 async function downloadDriveVideos(filePath, fileId, size) {
     const dest = fs_1.default.createWriteStream(filePath);
     try {
-        const drive = await (0, google_drive_1.getDriveInstance)();
+        const drive = googleapis_1.google.drive({ version: 'v3', auth: google_drive_1.oauth2Client });
         const result = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'stream' });
         let bytesRead = 0;
         let initialPercenatge = 0;
@@ -72,21 +73,19 @@ exports.downloadDriveVideos = downloadDriveVideos;
  */
 async function uploadVideoChunked(filePath, fileName) {
     try {
-        const auth = await (0, google_drive_1.authorize)();
-        const accessToken = (await auth.getAccessToken()).token;
         const name = fileName;
         const mimeType = 'video/mp4';
-        const parents = ['1sk2RwEzmU1-feA35dhn38bVJlJG9RW2j8RAUOeVreYlfmlleQrrrzCyjzQNLIPvEFznXuBtL'];
+        // const parents = ['1sk2RwEzmU1-feA35dhn38bVJlJG9RW2j8RAUOeVreYlfmlleQrrrzCyjzQNLIPvEFznXuBtL'];
         const chunkSize = 5 * 1024 * 1024; // This is a sample chunk size.
         const fileSize = fs_1.default.statSync(filePath).size;
         const initialResponse = await (0, axios_1.default)({
             method: 'POST',
             url: 'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable',
             headers: {
-                Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${(await google_drive_1.oauth2Client.getAccessToken()).token}`,
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({ name, mimeType, parents })
+            data: JSON.stringify({ name, mimeType })
         });
         const { location } = initialResponse.headers;
         let startByte = 0;
@@ -102,11 +101,11 @@ async function uploadVideoChunked(filePath, fileName) {
             startByte = currentEndByte + 1;
             if (chunkUploadingResponse?.data) {
                 console.log(chunkUploadingResponse?.data);
-                const progress = (startByte / fileSize) * 100;
-                uploadProgressEmitter.emit('progress', progress);
-                if (progress === 100)
-                    uploadProgressEmitter.emit('complete');
             }
+            const progress = (startByte / fileSize) * 100;
+            uploadProgressEmitter.emit('progress', progress);
+            if (progress === 100)
+                uploadProgressEmitter.emit('complete');
         }
         fs_1.default.unlink(filePath, (fileerr) => {
             if (fileerr) {

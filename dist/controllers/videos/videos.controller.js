@@ -8,6 +8,7 @@ const common_helper_1 = require("../../helpers/common.helper");
 const constant_1 = require("../../config/constant");
 const google_drive_1 = require("../../config/google.drive");
 const videos_service_1 = require("./videos.service");
+const googleapis_1 = require("googleapis");
 exports.default = {
     /**
      * Download a video file from a source and upload it to a destination.
@@ -30,7 +31,7 @@ exports.default = {
                 throw new Error('Invalid file');
             }
             console.log(fileId);
-            const drive = await (0, google_drive_1.getDriveInstance)();
+            const drive = googleapis_1.google.drive({ version: 'v3', auth: google_drive_1.oauth2Client });
             const response = await drive.files.get({
                 fileId,
                 fields: 'size, name'
@@ -49,6 +50,7 @@ exports.default = {
             (0, common_helper_1.responseMethod)(req, res, 
             // {},
             downloadingResult, constant_1.responseCode.OK, true, constant_1.responseMessage.DOWNLOADING_SUCCESSFULL);
+            res.end();
         }
         catch (error) {
             console.error('Error downloading file:', error);
