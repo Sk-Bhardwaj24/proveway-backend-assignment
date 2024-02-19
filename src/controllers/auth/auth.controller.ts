@@ -21,9 +21,8 @@ export default {
         responseMethod(
           req,
           res,
-          {
-            data: req.user
-          },
+          req.user,
+
           responseCode.OK,
           true,
           responseMessage.VERIFY_TOKEN_SUCCESSFULL
